@@ -15,7 +15,6 @@ class App extends Component {
     this.handleProductCost = this.handleProductCost.bind(this);
     this.handleShippingPrice = this.handleShippingPrice.bind(this);
     this.handleShippingCost = this.handleShippingCost.bind(this);
-    this.getNetProfit = this.getNetProfit.bind(this);
   }
 
   handleProductPrice(e) {
@@ -41,20 +40,18 @@ class App extends Component {
   }
 
   getNetProfit() {
-    return (this.state.productPrice + this.state.shippingPrice) // 2 + 1
-      - (this.state.productCost + this.state.shippingCost) // 0.16 + 1 Seller Costs
-      - this.getTotalFees();
+    return this.state.productPrice + this.state.shippingPrice - this.state.productCost - this.state.shippingCost - this.getTotalFees();
   }
 
-  getProfitMargin() {
-    return;
+  getNetProfitMargin() {
+    return (this.getNetProfit() / this.state.productPrice) * 100;
   }
 
   render() {
     return (
       <div className="App">
         <h1>Etsy Calculator</h1>
-        <h3>Market Price</h3>
+        <h3>Buyer Pays</h3>
         <div>Product Price: <input onChange={this.handleProductPrice} /> </div>
         <div>Shipping Price: <input onChange={this.handleShippingPrice} /></div>
 
@@ -64,24 +61,11 @@ class App extends Component {
 
         <h3>Breakdown</h3>
         <div>Total Etsy Fees: {this.getTotalFees()}</div>
-        <div>Net Profit: {this.getNetProfit()}</div>
-        <div>Profit Margin: {}%</div>
+        <div>Net Profit: {this.getNetProfit().toFixed(2)}</div>
+        <div>Net Profit Margin: {this.getNetProfitMargin().toFixed(2)}%</div>
       </div>
     );
   }
 }
 
 export default App;
-
-
-/*
-
-
-5% of fee
-5% of shipping
-0.20 relisting fee
-
-reverse calculator
-if you're looking to make X profit per product
-//gets markup %
-*/
