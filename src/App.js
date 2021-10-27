@@ -8,13 +8,15 @@ class App extends Component {
       productPrice: 0,
       productCost: 0,
       shippingPrice: 0,
-      shippingCost: 0, 
+      shippingCost: 0,
+      netProfitReverse: 0,
     };
 
     this.handleProductPrice = this.handleProductPrice.bind(this);
     this.handleProductCost = this.handleProductCost.bind(this);
     this.handleShippingPrice = this.handleShippingPrice.bind(this);
     this.handleShippingCost = this.handleShippingCost.bind(this);
+    this.handleNetProfitReverse = this.handleNetProfitReverse.bind(this);
   }
 
   handleProductPrice(e) {
@@ -33,6 +35,10 @@ class App extends Component {
     this.setState({ shippingCost: Number(e.target.value) });
   }
 
+  handleNetProfitReverse(e) {
+    this.setState({ netProfitReverse: Number(e.target.value) });
+  }
+
   getTotalFees() {
     return (this.state.productPrice + this.state.shippingPrice) * 0.05 //transaction fee
       + ((this.state.productPrice + this.state.shippingPrice) * 0.03 + 0.25) // 0.34 Payment processing fee
@@ -47,22 +53,33 @@ class App extends Component {
     return (this.getNetProfit() / this.state.productPrice) * 100;
   }
 
+  getNetProfitReverse() {
+    return this.state.netProfitReverse + 
+    (this.state.netProfitReverse * 0.05) + //transaction fee
+    0.20 + //listing fee
+    (this.state.netProfitReverse * 0.03) + 0.25; //processing fee
+  }
+
   render() {
     return (
       <div className="App">
         <h1>Etsy Calculator</h1>
-        <h3>Buyer Pays</h3>
+        <h3>Product Info</h3>
         <div>Product Price: <input onChange={this.handleProductPrice} /> </div>
         <div>Shipping Price: <input onChange={this.handleShippingPrice} /></div>
 
         <h3>Seller's Costs</h3>
-        <div>Product Price: <input onChange={this.handleProductCost} /> </div>
-        <div>Shipping Price: <input onChange={this.handleShippingCost} /></div>
+        <div>Product Cost: <input onChange={this.handleProductCost} /> </div>
+        <div>Shipping Cost: <input onChange={this.handleShippingCost} /></div>
 
         <h3>Breakdown</h3>
-        <div>Total Etsy Fees: {this.getTotalFees()}</div>
+        <div>Total Etsy Fees: {this.getTotalFees().toFixed(2)}</div>
         <div>Net Profit: {this.getNetProfit().toFixed(2)}</div>
         <div>Net Profit Margin: {this.getNetProfitMargin().toFixed(2)}%</div>
+
+        <h3>Reverse Formula</h3>
+        <div>Desired Net Profit: <input onChange={this.handleNetProfitReverse} /></div>
+        <div>Set listing to ${this.getNetProfitReverse().toFixed(2)}</div>
       </div>
     );
   }
