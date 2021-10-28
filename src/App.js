@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import getTotalFees from './util/getTotalFees';
 import './App.css';
 
 class App extends Component {
@@ -39,14 +40,8 @@ class App extends Component {
     this.setState({ netProfitReverse: Number(e.target.value) });
   }
 
-  getTotalFees() {
-    return (this.state.productPrice + this.state.shippingPrice) * 0.05 //transaction fee
-      + ((this.state.productPrice + this.state.shippingPrice) * 0.03 + 0.25) // 0.34 Payment processing fee
-      + 0.20; // relisting fee
-  }
-
   getNetProfit() {
-    return this.state.productPrice + this.state.shippingPrice - this.state.productCost - this.state.shippingCost - this.getTotalFees();
+    return this.state.productPrice + this.state.shippingPrice - this.state.productCost - this.state.shippingCost// - this.getTotalFees();
   }
 
   getNetProfitMargin() {
@@ -73,7 +68,7 @@ class App extends Component {
         <div>Shipping Cost: <input onChange={this.handleShippingCost} /></div>
 
         <h3>Breakdown</h3>
-        <div>Total Etsy Fees: {this.getTotalFees().toFixed(2)}</div>
+        <div>Total Etsy Fees: {getTotalFees(this.state.productPrice, this.state.shippingPrice).toFixed(2)}</div>
         <div>Net Profit: {this.getNetProfit().toFixed(2)}</div>
         <div>Net Profit Margin: {this.getNetProfitMargin().toFixed(2)}%</div>
 
