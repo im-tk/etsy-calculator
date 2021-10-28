@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import getTotalFees from './util/getTotalFees';
+import getNetProfit from './util/getNetProfit';
 import './App.css';
 
 class App extends Component {
@@ -56,6 +57,7 @@ class App extends Component {
   }
 
   render() {
+    //console.log(this.state.productPrice);
     return (
       <div className="App">
         <h1>Etsy Calculator</h1>
@@ -68,8 +70,8 @@ class App extends Component {
         <div>Shipping Cost: <input onChange={this.handleShippingCost} /></div>
 
         <h3>Breakdown</h3>
-        <div>Total Etsy Fees: {getTotalFees(this.state.productPrice, this.state.shippingPrice).toFixed(2)}</div>
-        <div>Net Profit: {this.getNetProfit().toFixed(2)}</div>
+        <div>Total Etsy Fees: {getTotalFees(this.state.productPrice, this.state.shippingPrice)}</div>
+        <div>Net Profit: {getNetProfit(this.state.productPrice, this.state.shippingPrice, this.state.productCost, this.state.shippingCost)}</div>
         <div>Net Profit Margin: {this.getNetProfitMargin().toFixed(2)}%</div>
 
         <h3>Reverse Formula</h3>

@@ -16,7 +16,7 @@ function getProcessingFee(cartTotal) {
 
 const getTotalFees = (productPrice, shippingPrice) => {
   let cartTotal = productPrice + shippingPrice;
-  return  getTransactionFee(cartTotal) + getProcessingFee(cartTotal) + listingFee;
+  return  (getTransactionFee(cartTotal) + getProcessingFee(cartTotal) + listingFee).toFixed(2);
 }
 
 export default getTotalFees;
