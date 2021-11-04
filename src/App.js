@@ -3,6 +3,8 @@ import getTotalFees from './util/getTotalFees';
 import getNetProfit from './util/getNetProfit';
 import './App.css';
 
+const regex = /[0-9]|\./;
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -19,6 +21,7 @@ class App extends Component {
     this.handleShippingPrice = this.handleShippingPrice.bind(this);
     this.handleShippingCost = this.handleShippingCost.bind(this);
     this.handleNetProfitReverse = this.handleNetProfitReverse.bind(this);
+    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
   }
 
   handleProductPrice(e) {
@@ -41,6 +44,14 @@ class App extends Component {
     this.setState({ netProfitReverse: Number(e.target.value) });
   }
 
+  handleOnKeyPress(e) {
+    if(!regex.test(e.key)) {
+      console.log("HELLO");
+      e.preventDefault();
+      return false;
+    }
+  }
+
   getNetProfit() {
     return this.state.productPrice + this.state.shippingPrice - this.state.productCost - this.state.shippingCost// - this.getTotalFees();
   }
@@ -57,17 +68,16 @@ class App extends Component {
   }
 
   render() {
-    //console.log(this.state.productPrice);
     return (
       <div className="App">
         <h1>Etsy Calculator</h1>
         <h3>Product Info</h3>
-        <div>Product Price: <input onChange={this.handleProductPrice} /> </div>
-        <div>Shipping Price: <input onChange={this.handleShippingPrice} /></div>
+        <div>Product Price: <input onChange={this.handleProductPrice} type="text" onKeyPress={this.handleOnKeyPress}/> </div>
+        <div>Shipping Price: <input onChange={this.handleShippingPrice} type="text" onKeyPress={this.handleOnKeyPress}/></div>
 
         <h3>Seller's Costs</h3>
-        <div>Product Cost: <input onChange={this.handleProductCost} /> </div>
-        <div>Shipping Cost: <input onChange={this.handleShippingCost} /></div>
+        <div>Product Cost: <input onChange={this.handleProductCost} type="text" onKeyPress={this.handleOnKeyPress}/> </div>
+        <div>Shipping Cost: <input onChange={this.handleShippingCost} type="text" onKeyPress={this.handleOnKeyPress}/></div>
 
         <h3>Breakdown</h3>
         <div>Total Etsy Fees: {getTotalFees(this.state.productPrice, this.state.shippingPrice)}</div>
